@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShroomCity.API", "ShroomCity.API\ShroomCity.API.csproj", "{F8691781-F61F-46AF-A02E-BB06D9B0BA2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShroomCity.Models", "ShroomCity.Models\ShroomCity.Models.csproj", "{B57A1403-0594-4606-A66B-EA1569E720F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShroomCity.Repositories", "ShroomCity.Repositories\ShroomCity.Repositories.csproj", "{8C704B72-19F4-492F-A0B6-1E98A991199E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShroomCity.Services", "ShroomCity.Services\ShroomCity.Services.csproj", "{0D910977-AF1A-4FF1-B365-0E461ACDCAF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShroomCity.Utilities", "ShroomCity.Utilities\ShroomCity.Utilities.csproj", "{ECF8090F-408F-4F3D-9E73-E048E1D186E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8691781-F61F-46AF-A02E-BB06D9B0BA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8691781-F61F-46AF-A02E-BB06D9B0BA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8691781-F61F-46AF-A02E-BB06D9B0BA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8691781-F61F-46AF-A02E-BB06D9B0BA2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B57A1403-0594-4606-A66B-EA1569E720F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B57A1403-0594-4606-A66B-EA1569E720F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B57A1403-0594-4606-A66B-EA1569E720F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B57A1403-0594-4606-A66B-EA1569E720F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C704B72-19F4-492F-A0B6-1E98A991199E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C704B72-19F4-492F-A0B6-1E98A991199E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C704B72-19F4-492F-A0B6-1E98A991199E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C704B72-19F4-492F-A0B6-1E98A991199E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D910977-AF1A-4FF1-B365-0E461ACDCAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D910977-AF1A-4FF1-B365-0E461ACDCAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D910977-AF1A-4FF1-B365-0E461ACDCAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D910977-AF1A-4FF1-B365-0E461ACDCAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECF8090F-408F-4F3D-9E73-E048E1D186E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECF8090F-408F-4F3D-9E73-E048E1D186E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECF8090F-408F-4F3D-9E73-E048E1D186E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECF8090F-408F-4F3D-9E73-E048E1D186E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
