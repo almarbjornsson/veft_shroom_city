@@ -1,0 +1,1347 @@
+{
+	"info": {
+		"_postman_id": "d332aee2-d1e9-44f5-870d-85f286918801",
+		"name": "Shroom City",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1878028",
+		"_collection_link": "https://cloudy-meteor-890280.postman.co/workspace/My-Workspace~ee4dec07-233f-4d8c-88c1-2adaed3c84d6/collection/1878028-d332aee2-d1e9-44f5-870d-85f286918801?action=share&source=collection_link&creator=1878028"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Register",
+					"item": [
+						{
+							"name": "Register (too short name)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"FullName\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('FullName');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John\",\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (email address wrong format)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"EmailAddress\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('EmailAddress');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John Triangle\",\n    \"emailAddress\": \"john.triangle.vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (password too short)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"Password\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('Password');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John Triangle\",\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc\",\n    \"passwordConfirmation\": \"Abc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (passwords don't match)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"PasswordConfirmation\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('PasswordConfirmation');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John Triangle\",\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.54321\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (success - John Triangle)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const apiToken = pm.response.text()",
+											"pm.collectionVariables.set(\"jwt\", apiToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John Triangle\",\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (success - Lisa Square)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const apiToken = pm.response.text()",
+											"pm.collectionVariables.set(\"jwt\", apiToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"Lisa Square\",\n    \"emailAddress\": \"lisa.square@vigilante.com\",\n    \"bio\": \"Lisa Square is a passionate environmental conservationist based in the beautiful town of Boulder, Colorado. With a deep love for nature and a background in environmental science, she has dedicated her life to protecting our planet's precious ecosystems. Lisa's journey in conservation began with her extensive work in reforestation projects, where she played a crucial role in restoring thousands of acres of forests in the Rocky Mountains. Her expertise extends to wildlife preservation, where she's been involved in efforts to save endangered species like the Colorado River cutthroat trout. When she's not in the field, Lisa advocates for sustainable living and shares her knowledge through educational workshops and seminars. In her free time, she enjoys hiking, rock climbing, and capturing the beauty of the outdoors through her photography. With her unwavering commitment to the environment, Lisa Square stands as a true steward of nature and an inspiration to all who strive to make a positive impact.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register (user already registered)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 401', () => {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"John Triangle\",\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"bio\": \"John Triangle is a brilliant astrophysicist and a stargazing enthusiast renowned for his groundbreaking contributions to the field of space exploration. Born and raised under the vast, starry skies of a remote desert town, John's fascination with the cosmos began at an early age. He earned a degree in Astrophysics from the esteemed Celestial Institute, launching him on a trajectory toward scientific stardom. John's research has taken him on a cosmic journey, from studying distant quasars and black holes to deciphering the mysteries of dark matter and the origins of the universe itself. His work has earned him international acclaim, establishing him as a leading authority in astrophysical studies. Beyond his scientific endeavors, John is an ardent promoter of space exploration and science education. He frequently delivers captivating talks and lectures, inspiring both aspiring scientists and the general public to reach for the stars. In his spare time, John indulges in amateur astronomy, capturing breathtaking celestial images through his telescope. With his boundless curiosity and passion for understanding the universe, John Triangle is an astronomical luminary, illuminating the path to greater cosmic understanding for all.\",\n    \"password\": \"Abc.12345\",\n    \"passwordConfirmation\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login (email address wrong format)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"EmailAddress\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('EmailAddress');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"emailAddress\": \"john.triangle.vigilante.com\",\n    \"password\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login (password too short)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 400', () => {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test('should fail with an error on the \"Password\" property', () => {",
+											"    const json = pm.response.json()",
+											"    pm.expect(json.errors).to.have.property('Password');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"password\": \"Abc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login (success - John Triangle)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const apiToken = pm.response.text()",
+											"pm.collectionVariables.set(\"jwt\", apiToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"emailAddress\": \"john.triangle@vigilante.com\",\n    \"password\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login (success - Lisa Square)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const apiToken = pm.response.text()",
+											"pm.collectionVariables.set(\"jwt\", apiToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"emailAddress\": \"lisa.square@vigilante.com\",\n    \"password\": \"Abc.12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/account/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"item": [
+						{
+							"name": "Logout (no session)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 401', () => {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/account/logout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout (success)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/account/logout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Profile (success)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/account/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Profile (no session)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('should fail with status code 401', () => {",
+											"    pm.response.to.have.status(401);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/account/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"account",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mushrooms",
+			"item": [
+				{
+					"name": "Get all lookup mushrooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/lookup?pageSize=4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"lookup"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all mushrooms (no filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all mushrooms (by name)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms?name=canni",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "canni"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all mushrooms (by color)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms?color=yellow",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							],
+							"query": [
+								{
+									"key": "color",
+									"value": "yellow"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all mushrooms (by cap size range)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms?capSizeMinimum=5&capSizeMaximum=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							],
+							"query": [
+								{
+									"key": "capSizeMinimum",
+									"value": "5"
+								},
+								{
+									"key": "capSizeMaximum",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all mushrooms (by stem size range)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms?stemSizeMinimum=1&stemSizeMaximum=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							],
+							"query": [
+								{
+									"key": "stemSizeMinimum",
+									"value": "1"
+								},
+								{
+									"key": "stemSizeMaximum",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get mushroom by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get mushroom by id (not found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/1000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create mushroom (missing name)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 400', () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test('should fail with an error on the \"Name\" property', () => {",
+									"    const json = pm.response.json()",
+									"    pm.expect(json.errors).to.have.property('Name');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a lookup mushroom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Xeromphalina cauticinalis\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create non-lookup mushroom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a fantastical fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update mushroom with no lookup",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a poisonous fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update mushroom with lookup",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a fantastical fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/4?performLookup=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"4"
+							],
+							"query": [
+								{
+									"key": "performLookup",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update mushroom (not found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a fantastical fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/1000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove mushroom (not found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a fantastical fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/1000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove mushroom (success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cannibalis Turelis\",\n    \"description\": \"Cannibalis Turelis, a fantastical fungi known to thrive in the hidden depths of enchanted forests, is a mesmerizing botanical anomaly. With a cap resembling a deep crimson goblet rimmed with iridescent silver, this captivating mushroom stands out as a jewel amidst the verdant undergrowth. Its stem is adorned with intricate, golden lace-like patterns, reminiscent of ancient scrolls, adding to its mystique.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create research entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"entries\": [\n        {\n            \"key\": \"CapSize\",\n            \"value\": \"6\"\n        },\n        {\n            \"key\": \"StemSize\",\n            \"value\": \"4\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mushrooms/1/research-entries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mushrooms",
+								"1",
+								"research-entries"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Researchers",
+			"item": [
+				{
+					"name": "Get all researchers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/researchers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"researchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get researcher by id (not found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/researchers/1000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"researchers",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get researcher by id (success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 404', () => {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/researchers/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"researchers",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get self researcher (no session)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should fail with status code 401', () => {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/researchers/self",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"researchers",
+								"self"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get self researcher (success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should succeed with status code 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/researchers/self",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"researchers",
+								"self"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:5001",
+			"type": "string"
+		},
+		{
+			"key": "jwt",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
