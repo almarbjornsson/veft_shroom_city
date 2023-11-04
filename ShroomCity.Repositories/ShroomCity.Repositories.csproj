@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShroomCity.Models\ShroomCity.Models.csproj" />
+    <ProjectReference Include="..\ShroomCity.Utilities\ShroomCity.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

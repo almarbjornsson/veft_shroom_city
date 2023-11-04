@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShroomCity.Models.Entities;
+using ShroomCity.Repositories.Seed;
 using Attribute = ShroomCity.Models.Entities.Attribute;
 
 namespace ShroomCity.Repositories
@@ -20,6 +21,9 @@ namespace ShroomCity.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Seed data
+            modelBuilder.Seed();
+
             // Define many-to-many relationships
 
             modelBuilder.Entity<Mushroom>()

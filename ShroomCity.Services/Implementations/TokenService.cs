@@ -1,4 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ShroomCity.Models.Dtos;
+using ShroomCity.Repositories.Interfaces;
 using ShroomCity.Services.Interfaces;
 
 namespace ShroomCity.Services.Implementations;
@@ -27,13 +33,59 @@ public class JwtConfiguration
 
 public class TokenService : ITokenService
 {
+    
+    private readonly JwtConfiguration _jwtConfiguration = new JwtConfiguration();
+    
+    private readonly ITokenRepository _tokenRepository;
+    public TokenService(IConfiguration configuration, ITokenRepository tokenRepository)
+    {
+        _tokenRepository = tokenRepository;
+        
+        _jwtConfiguration.Audience = configuration.GetSection("TokenAuthentication").GetSection("Audience").Value;
+        _jwtConfiguration.ExpirationInMinutes = configuration.GetSection("TokenAuthentication").GetSection("ExpirationInMinutes").Value;
+        _jwtConfiguration.Issuer = configuration.GetSection("TokenAuthentication").GetSection("Issuer").Value;
+        _jwtConfiguration.Secret = configuration.GetSection("TokenAuthentication").GetSection("SigningKey").Value;
+    }
+
     public string GenerateJwtToken(UserDto user)
     {
-        throw new NotImplementedException();
+
+        var principal = new ClaimsPrincipal();
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Email, user.EmailAddress),
+            new Claim("TokenId", user.TokenId.ToString()),
+        };
+        // Add all permissions as claims
+        claims.AddRange(user.Permissions.Select(permission => new Claim("permissions", permission)));
+        
+        var claimsIdentity = new ClaimsIdentity(claims, "Token");
+        
+        principal.AddIdentity(claimsIdentity);
+        
+        
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration.Secret));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        
+        var token = new JwtSecurityToken(_jwtConfiguration.Issuer,
+            _jwtConfiguration.Audience,
+            principal.Claims,
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_jwtConfiguration.ExpirationInMinutes)),
+            signingCredentials: credentials);
+        
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public Task BlacklistToken(int tokenId)
+    {
+        return _tokenRepository.BlacklistToken(tokenId);
     }
 
     public Task<bool> IsTokenBlacklisted(int tokenId)
     {
-        throw new NotImplementedException();
+        return _tokenRepository.IsTokenBlacklisted(tokenId);
     }
 }
