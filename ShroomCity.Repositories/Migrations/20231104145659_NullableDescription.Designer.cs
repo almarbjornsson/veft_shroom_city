@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShroomCity.Repositories;
@@ -11,9 +12,11 @@ using ShroomCity.Repositories;
 namespace ShroomCity.Repositories.Migrations
 {
     [DbContext(typeof(ShroomCityDbContext))]
-    partial class ShroomCityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231104145659_NullableDescription")]
+    partial class NullableDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +130,6 @@ namespace ShroomCity.Repositories.Migrations
 
                     b.Property<int>("RegisteredById")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Value")
                         .IsRequired()

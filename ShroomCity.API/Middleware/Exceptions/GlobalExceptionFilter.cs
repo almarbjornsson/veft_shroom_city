@@ -28,6 +28,12 @@ public class GlobalExceptionFilter : IExceptionFilter
                 Title = "User already exists.",
                 Detail = context.Exception.Message,
             },
+            not null when exceptionType == typeof(MushroomNotFoundException) => new ProblemDetails
+            {
+                Status = (int)HttpStatusCode.NotFound,
+                Title = "Mushroom not found.",
+                Detail = context.Exception.Message,
+            },
             
             _ => new ProblemDetails
             {

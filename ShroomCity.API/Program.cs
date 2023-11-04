@@ -80,7 +80,8 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>(sp =>
 
 // Token
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-// TODO: Mushroom
+// Mushroom
+builder.Services.AddScoped<IMushroomRepository, MushroomRepository>();
 
 // Researcher
 builder.Services.AddScoped<IResearcherRepository, ResearcherRepository>();
@@ -92,9 +93,23 @@ builder.Services.AddScoped<IResearcherRepository, ResearcherRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 // Token
 builder.Services.AddScoped<ITokenService, TokenService>();
-// TODO: Mushroom
 
-// TODO: External Mushroom
+
+
+
+
+// Mushroom
+builder.Services.AddScoped<IMushroomService, MushroomService>();
+
+// External Mushroom
+builder.Services.AddScoped<IExternalMushroomService, ExternalMushroomService>();
+
+
+// Typed injection
+builder.Services.AddHttpClient<IExternalMushroomService, ExternalMushroomService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ExternalApiBaseUrl") ?? "");
+});
+
 
 // Researcher
 builder.Services.AddScoped<IResearcherService, ResearcherService>();

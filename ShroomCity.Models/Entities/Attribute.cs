@@ -7,6 +7,9 @@ public class Attribute
     public int AttributeTypeId { get; set; }
     public AttributeType AttributeType { get; set; }
     public int RegisteredById { get; set; }
+    
+    public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
+    
     public User RegisteredBy { get; set; }
     public ICollection<Mushroom> Mushrooms { get; set; } = new List<Mushroom>();
 }

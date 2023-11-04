@@ -4,7 +4,7 @@ namespace ShroomCity.Models.InputModels;
 
 public class MushroomUpdateInputModel
 {
-    // [Required] ?
+    [Required]
     public string Name { get; set; }
 
     public string? Description { get; set; }
