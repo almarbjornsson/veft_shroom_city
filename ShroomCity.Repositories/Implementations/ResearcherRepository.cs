@@ -55,29 +55,17 @@ public class ResearcherRepository : IResearcherRepository
         // Everyone with the role Researcher and Admin
         var researchers = await _dbContext.Users
             .Where(u => u.Roles.Any(r => r.Name == RoleConstants.Researcher || r.Name == RoleConstants.Admin))
-            .Select(u => new
-            {
-                User = u,
-                Mushrooms = _dbContext.Attributes
-                    .Where(a => a.RegisteredById == u.Id)
-                    .SelectMany(a => a.Mushrooms)
-                    .Select(m => new MushroomDto
-                    {
-                        Id = m.Id,
-                        Name = m.Name,
-                        Description = m.Description,
-                    }).ToList()
-            })
             .ToListAsync();
 
-        return researchers.Select(r => new ResearcherDto
+        var researcherDtos = new List<ResearcherDto>();
+        
+        foreach (var researcher in researchers)
         {
-            Id = r.User.Id,
-            EmailAddress = r.User.EmailAddress,
-            Name = r.User.Name,
-            Bio = r.User.Bio,
-            AssociatedMushrooms = r.Mushrooms,
-        }).ToList();
+            var researcherDto = await PopulateAssociatedMushrooms(researcher);
+            researcherDtos.Add(researcherDto);
+        }
+
+        return researcherDtos;
     }
 
     public async Task<ResearcherDto?> GetResearcherByEmailAddress(string emailAddress)
@@ -94,7 +82,9 @@ public class ResearcherRepository : IResearcherRepository
 
     public async Task<ResearcherDto?> GetResearcherById(int id)
     {
+        // Everyone with the role Researcher and Admin
         var researcher = await _dbContext.Users
+            .Where(u => u.Roles.Any(r => r.Name == RoleConstants.Researcher || r.Name == RoleConstants.Admin))
             .FirstOrDefaultAsync(u => u.Id == id);
 
         if (researcher is null)
@@ -102,6 +92,13 @@ public class ResearcherRepository : IResearcherRepository
             return null;
         }
         
+        var researcherDto = await PopulateAssociatedMushrooms(researcher);
+        
+        return researcherDto;
+    }
+
+    private async Task<ResearcherDto> PopulateAssociatedMushrooms(User researcher)
+    {
         var mushrooms = await _dbContext.Mushrooms.Where(m => m.Attributes.Any(a => a.RegisteredById == researcher.Id))
             .Select(m => new MushroomDto
             {
@@ -110,7 +107,7 @@ public class ResearcherRepository : IResearcherRepository
                 Description = m.Description,
             })
             .ToListAsync();
-            
+
         var researcherDto = new ResearcherDto
         {
             Id = researcher.Id,

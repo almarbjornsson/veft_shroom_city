@@ -38,6 +38,8 @@ namespace ShroomCity.Repositories
                 .HasMany(r => r.Permissions)
                 .WithMany(p => p.Roles);
 
+            
+            
         }
     }
 }

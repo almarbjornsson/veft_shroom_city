@@ -1,6 +1,14 @@
 
 # How to deploy
 
+0. **Prerequisites**
+
+Login to Azure CLI, you need to have an Azure account and have the Azure CLI installed.
+You also need to have an active subscription. 
+```bash
+az login
+```
+
 1. **Create a Resource Group in Azure**
 
 ```bash
@@ -73,3 +81,5 @@ az container create --resource-group shroomcityalmar --name shroomcity --image s
 This is a very basic and insecure setup.
 - No HTTPS + Certificate
 - No logging or monitoring
+- No CI/CD pipeline
+- Database is not necessarily hosted in the same region as the API (ElephantSQL)

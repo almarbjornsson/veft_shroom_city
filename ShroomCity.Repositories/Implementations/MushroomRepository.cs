@@ -32,10 +32,7 @@ public class MushroomRepository : IMushroomRepository
         // Create attributes
         var associatedAttributes = attributeDtos.Select(a => new Attribute
         {
-            AttributeType = new AttributeType
-            {
-                Type = a.Type
-            },
+            AttributeType = _dbContext.AttributeTypes.FirstOrDefault(at => at.Type == a.Type) ?? throw new InvalidOperationException(),
             Value = a.Value,
             RegisteredById = researcher.Id,
         }).ToList();
@@ -114,13 +111,18 @@ public class MushroomRepository : IMushroomRepository
 
     public async Task<bool> DeleteMushroomById(int mushroomId)
     {
-        var mushroom = await _dbContext.Mushrooms
+        var mushroom = await _dbContext.Mushrooms.Include(mushroom => mushroom.Attributes)
             .FirstOrDefaultAsync(m => m.Id == mushroomId);
 
         if (mushroom == null)
         {
             return false;
         }
+        // According to the requirements, we should also delete the associated attributes.
+        // We do this even though the attributes could be associated with other mushrooms.
+        
+        // Delete the attributes
+        _dbContext.Attributes.RemoveRange(mushroom.Attributes);
         
         _dbContext.Mushrooms.Remove(mushroom);
         await _dbContext.SaveChangesAsync();
