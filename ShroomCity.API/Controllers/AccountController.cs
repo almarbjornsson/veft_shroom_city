@@ -24,6 +24,17 @@ public class AccountController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginInputModel inputModel)
     {
+        // Check if user is already signed in (get token id)
+        var tokenId = User.Claims.FirstOrDefault(c => c.Type == "TokenId")?.Value;
+        
+        // If user is already signed in, sign them out to blacklist the token
+        if (tokenId != null)
+        {
+            var tokenIdInt = int.Parse(tokenId);
+            await _accountService.SignOut(tokenIdInt);
+        }
+        
+        
         var userDto = await _accountService.SignIn(inputModel);
         
         // This should be a "catch-all" because we don't want to give away information about any existing users

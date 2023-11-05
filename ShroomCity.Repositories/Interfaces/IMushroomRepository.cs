@@ -9,15 +9,6 @@ public interface IMushroomRepository
     Task<bool> CreateResearchEntry(int mushroomId, string researcherEmailAddress, ResearchEntryInputModel inputModel);
     Task<bool> DeleteMushroomById(int mushroomId);
     Task<MushroomDetailsDto?> GetMushroomById(int id);
-    (int totalPages, IEnumerable<MushroomDto> mushrooms) GetMushroomsByCriteria(
-        string? name,
-        int? stemSizeMinimum,
-        int? stemSizeMaximum,
-        int? capSizeMinimum,
-        int? capSizeMaximum,
-        string? color,
-        int pageSize,
-        int pageNumber
-    );
+    (int totalPages, IEnumerable<MushroomDto> mushrooms) GetMushroomsByCriteria(GetMushroomsInputModel inputModel);
     Task<bool> UpdateMushroomById(int mushroomId, MushroomUpdateInputModel inputModel);
 }

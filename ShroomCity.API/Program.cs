@@ -14,6 +14,9 @@ using ShroomCity.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 
+// Bind JwtConfiguration to configuration to inject as IOptions<JwtConfiguration>
+builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("TokenAuthentication"));
+
 // Adding Authentication  
 builder.Services.AddJwtAuthentication(builder.Configuration);
 // Adding Authorization policies
@@ -94,16 +97,11 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 // Token
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-
-
-
-
 // Mushroom
 builder.Services.AddScoped<IMushroomService, MushroomService>();
 
 // External Mushroom
 builder.Services.AddScoped<IExternalMushroomService, ExternalMushroomService>();
-
 
 // Typed injection
 builder.Services.AddHttpClient<IExternalMushroomService, ExternalMushroomService>(client => {

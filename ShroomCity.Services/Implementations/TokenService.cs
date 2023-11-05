@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ShroomCity.Models.Dtos;
 using ShroomCity.Repositories.Interfaces;
@@ -33,18 +34,14 @@ public class JwtConfiguration
 
 public class TokenService : ITokenService
 {
-    
-    private readonly JwtConfiguration _jwtConfiguration = new JwtConfiguration();
+
+    private readonly JwtConfiguration _jwtConfiguration;
     
     private readonly ITokenRepository _tokenRepository;
-    public TokenService(IConfiguration configuration, ITokenRepository tokenRepository)
+    public TokenService(IOptions<JwtConfiguration> options, ITokenRepository tokenRepository)
     {
         _tokenRepository = tokenRepository;
-        
-        _jwtConfiguration.Audience = configuration.GetSection("TokenAuthentication").GetSection("Audience").Value;
-        _jwtConfiguration.ExpirationInMinutes = configuration.GetSection("TokenAuthentication").GetSection("ExpirationInMinutes").Value;
-        _jwtConfiguration.Issuer = configuration.GetSection("TokenAuthentication").GetSection("Issuer").Value;
-        _jwtConfiguration.Secret = configuration.GetSection("TokenAuthentication").GetSection("SigningKey").Value;
+        _jwtConfiguration = options.Value;
     }
 
     public string GenerateJwtToken(UserDto user)

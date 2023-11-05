@@ -23,17 +23,10 @@ public class MushroomsController : ControllerBase
 
     [Authorize(Policy = "role:analyst")]
     [HttpGet]
-    public ActionResult<Envelope<MushroomDto>> GetMushrooms(
-        [FromQuery] string? name,
-        [FromQuery] int? stemSizeMinimum,
-        [FromQuery] int? stemSizeMaximum,
-        [FromQuery] int? capSizeMinimum,
-        [FromQuery] int? capSizeMaximum,
-        [FromQuery] string? color,
-        [FromQuery] int pageSize = 25,
-        [FromQuery] int pageNumber = 1)
+    public ActionResult<Envelope<MushroomDto>> GetMushrooms([FromQuery] GetMushroomsInputModel inputModel)
     {
-        var filteredMushrooms = _mushroomService.GetMushrooms(name, stemSizeMinimum, stemSizeMaximum, capSizeMinimum, capSizeMaximum, color, pageSize, pageNumber);
+        
+        var filteredMushrooms = _mushroomService.GetMushrooms(inputModel);
         
         if (filteredMushrooms == null)
         {
@@ -93,18 +86,22 @@ public class MushroomsController : ControllerBase
     
     [Authorize(Policy = "role:researcher")]
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> UpdateMushroom(int id, MushroomUpdateInputModel inputModel, [FromQuery] bool performlookup)
+    public async Task<ActionResult> UpdateMushroom(int id, MushroomUpdateInputModel inputModel, [FromQuery] bool performLookup)
     {
-        var mushroom = await _mushroomService.GetMushroomById(id);
-        if (mushroom == null)
+        // Only check if the mushroom exists if we're not performing a lookup
+        if (performLookup == false)
         {
-            return NotFound();
+            var mushroom = await _mushroomService.GetMushroomById(id);
+            if (mushroom == null)
+            {
+                return NotFound();
+            }
         }
         
-        var isUpdated = await _mushroomService.UpdateMushroomById(id, inputModel, performlookup);
+        var isUpdated = await _mushroomService.UpdateMushroomById(id, inputModel, performLookup);
         if (!isUpdated)
         {
-            return BadRequest();
+            return NotFound();
         }
 
         return NoContent();

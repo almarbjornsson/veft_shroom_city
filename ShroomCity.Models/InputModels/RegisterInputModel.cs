@@ -15,6 +15,8 @@ public class RegisterInputModel
     [Required]
     [MinLength(6)]
     public string Password { get; set; }
+    
+    public string? Bio { get; set; }
 
     [Required]
     [Compare("Password")]

@@ -7,7 +7,7 @@ namespace ShroomCity.Services.Interfaces;
 public interface IMushroomService
 {
     Task<int> CreateMushroom(string researcherEmailAddress, MushroomInputModel inputModel);
-    Envelope<MushroomDto>? GetMushrooms(string? name, int? stemSizeMinimum, int? stemSizeMaximum, int? capSizeMinimum, int? capSizeMaximum, string? color, int pageSize, int pageNumber);
+    Envelope<MushroomDto>? GetMushrooms(GetMushroomsInputModel inputModel);
     Task<MushroomDetailsDto?> GetMushroomById(int id);
     Task<bool> UpdateMushroomById(int mushroomId, MushroomUpdateInputModel inputModel, bool performLookup);
     Task<bool> DeleteMushroomById(int mushroomId);

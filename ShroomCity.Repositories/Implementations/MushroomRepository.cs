@@ -150,37 +150,101 @@ public class MushroomRepository : IMushroomRepository
 
     }
 
-    public (int totalPages, IEnumerable<MushroomDto> mushrooms) GetMushroomsByCriteria(string? name, int? stemSizeMinimum, int? stemSizeMaximum, int? capSizeMinimum, int? capSizeMaximum, string? color, int pageSize, int pageNumber)
+    public (int totalPages, IEnumerable<MushroomDto> mushrooms) GetMushroomsByCriteria(
+    GetMushroomsInputModel inputModel)
+{
+    
+    // The database design is flawed, because the value is a string, and cannot be calculated in the database.
+    // We can't do the filtering in the database, because we need to filter on the average values.
+    // So we need to fetch all the mushrooms, and then filter them.
+    var mushrooms = _dbContext.Mushrooms
+        .Include(m => m.Attributes)
+        .ThenInclude(a => a.AttributeType)
+        .Where(m => inputModel.Name == null || m.Name == inputModel.Name)
+        .ToList();
+    
+    // There is no guarantee that the value is a number, so this filtering might blow up.
+    
+    // Filter on the average stem size
+    if (inputModel.StemSizeMinimum != null || inputModel.StemSizeMaximum != null)
     {
-        
-        
-        
-        
-        var mushrooms = _dbContext.Mushrooms
-            .Include(m => m.Attributes)
-            .ThenInclude(attribute => attribute.AttributeType)
-            .Where(m =>
-                (name == null || m.Name.Contains(name)) &&
-                (stemSizeMinimum == null || m.Attributes.Any(a => a.AttributeType.Type == "StemSize" && int.Parse(a.Value) >= stemSizeMinimum)) &&
-                (stemSizeMaximum == null || m.Attributes.Any(a => a.AttributeType.Type == "StemSize" && int.Parse(a.Value) <= stemSizeMaximum)) &&
-                (capSizeMinimum == null || m.Attributes.Any(a => a.AttributeType.Type == "CapSize" && int.Parse(a.Value) >= capSizeMinimum)) &&
-                (capSizeMaximum == null || m.Attributes.Any(a => a.AttributeType.Type == "CapSize" && int.Parse(a.Value) <= capSizeMaximum)) &&
-                (color == null || m.Attributes.Any(a => a.AttributeType.Type == "Color" && a.Value == color))
-            )
-            .Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize)
-            .Select(m => new MushroomDto
+        mushrooms = mushrooms.Where(m =>
+        {
+            var stemSizes = m.Attributes.Where(a => a.AttributeType.Type == "StemSize")
+                .Select(a => int.Parse(a.Value))
+                .ToList();
+            
+            // Mushroom will not be included if there are no stem size attributes
+            if (!stemSizes.Any())
             {
-                Id = m.Id,
-                Name = m.Name,
-                Description = m.Description
-            })
-            .ToList();
+                return false;
+            }
 
-        var totalPages = (int) Math.Ceiling((double) _dbContext.Mushrooms.Count() / pageSize);
-
-        return (totalPages, mushrooms);
+            var stemSizeAvg = stemSizes.Average();
+            return (inputModel.StemSizeMinimum == null || stemSizeAvg >= inputModel.StemSizeMinimum) &&
+                   (inputModel.StemSizeMaximum == null || stemSizeAvg <= inputModel.StemSizeMaximum);
+        }).ToList();
     }
+    
+    // Filter on the average cap size
+    if (inputModel.CapSizeMinimum != null || inputModel.CapSizeMaximum != null)
+    {
+        mushrooms = mushrooms.Where(m =>
+        {
+            
+            var capSizes = m.Attributes.Where(a => a.AttributeType.Type == "CapSize")
+                .Select(a => int.Parse(a.Value))
+                .ToList();
+            // Mushroom will not be included if there are no cap size attributes
+            if (!capSizes.Any())
+            {
+                return false;
+            }
+
+            var capSizeAvg = capSizes.Average();
+            return (inputModel.CapSizeMinimum == null || capSizeAvg >= inputModel.CapSizeMinimum) &&
+                   (inputModel.CapSizeMaximum == null || capSizeAvg <= inputModel.CapSizeMaximum);
+        }).ToList();
+    }
+
+
+    // Filter on the color
+    if (inputModel.Color != null)
+    {
+        mushrooms = mushrooms.Where(m =>
+        {
+            var colors = m.Attributes.Where(a => a.AttributeType.Type == "Color")
+                .Select(a => a.Value)
+                .ToList();
+            // Mushroom will not be included if there are no color attributes
+            if (!colors.Any())
+            {
+                return false;
+            }
+
+            return colors.Contains(inputModel.Color);
+        }).ToList();
+    }
+    
+    // Pagination
+    mushrooms = mushrooms
+        .Skip((inputModel.PageNumber - 1) * inputModel.PageSize)
+        .Take(inputModel.PageSize)
+        .ToList();
+    
+    var mushroomDtos = mushrooms.Select(m => new MushroomDto
+    {
+        Id = m.Id,
+        Name = m.Name,
+        Description = m.Description,
+    });
+
+    var totalPages = (int)Math.Ceiling((double)_dbContext.Mushrooms.Count() / inputModel.PageSize);
+
+    return (totalPages, mushroomDtos);
+
+}
+
 
     public async Task<bool> UpdateMushroomById(int mushroomId, MushroomUpdateInputModel inputModel)
     {

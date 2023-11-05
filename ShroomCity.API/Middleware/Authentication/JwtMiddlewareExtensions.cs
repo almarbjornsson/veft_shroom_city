@@ -10,6 +10,14 @@ public static class JwtMiddlewareExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        var signingKey = configuration.GetValue<string>("TokenAuthentication:Secret");
+        if (string.IsNullOrEmpty(signingKey))
+        {
+            throw new InvalidOperationException("The signing key is null or empty!");
+        }
+
+        
+        
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -28,7 +36,7 @@ public static class JwtMiddlewareExtensions
                     ValidateIssuerSigningKey = true,
                     ValidAudience = configuration.GetValue<string>("TokenAuthentication:Audience"),
                     ValidIssuer = configuration.GetValue<string>("TokenAuthentication:Issuer"),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("TokenAuthentication:SigningKey")))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey))
                 };
                 options.Events = new JwtBearerEvents
                 {

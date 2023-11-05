@@ -48,6 +48,7 @@ namespace ShroomCity.Repositories.Implementations
                 {
                     Name = inputModel.FullName,
                     EmailAddress = inputModel.EmailAddress,
+                    Bio = inputModel.Bio,
                     HashedPassword = Hasher.HashPassword(inputModel.Password, _salt)
                 };
 
@@ -80,7 +81,6 @@ namespace ShroomCity.Repositories.Implementations
                     Name = user.Name,
                     Bio = user.Bio,
                     EmailAddress = user.EmailAddress,
-            
                     Permissions = permissions.Select(p => p.Code).ToList(),
                     TokenId = tokenId
                 };
@@ -111,19 +111,15 @@ namespace ShroomCity.Repositories.Implementations
             var tokenId = await _tokenRepository.CreateToken();
             
 
-            // TODO mapping function for entity to dto
             return new UserDto
             {
                 Id = user.Id,
                 Name = user.Name,
                 Bio = user.Bio,
                 EmailAddress = user.EmailAddress,
-                
                 Permissions = permissions.Select(p => p.Code).ToList(),
                 TokenId = tokenId 
             };
         }
-
-
     }
 }

@@ -97,34 +97,35 @@ public class MushroomService : IMushroomService
         return _mushroomRepository.GetMushroomById(id);
     }
 
-    public Envelope<MushroomDto>? GetMushrooms(string? name, int? stemSizeMinimum, int? stemSizeMaximum, int? capSizeMinimum, int? capSizeMaximum, string? color, int pageSize, int pageNumber)
+    public Envelope<MushroomDto>? GetMushrooms(GetMushroomsInputModel inputModel)
     {
-        var mushroomsByCriteria = _mushroomRepository.GetMushroomsByCriteria(name, stemSizeMinimum, stemSizeMaximum, capSizeMinimum, capSizeMaximum, color, pageSize, pageNumber);
+        var mushroomsByCriteria = _mushroomRepository.GetMushroomsByCriteria(inputModel);
         
         
         return new Envelope<MushroomDto>
         {
             Items = mushroomsByCriteria.mushrooms,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
+            PageNumber = inputModel.PageNumber,
+            PageSize = inputModel.PageSize,
             TotalPages = mushroomsByCriteria.totalPages,
         };
     }
 
     public async Task<bool> UpdateMushroomById(int mushroomId, MushroomUpdateInputModel inputModel, bool performLookup)
     {
-        if (!performLookup) return await _mushroomRepository.UpdateMushroomById(mushroomId, inputModel);
-        
-        
-        var externalMushroom = await _externalMushroomService.GetMushroomByName(inputModel.Name);
-        
-        if (externalMushroom == null)
+        if (performLookup)
         {
-            return false;
+            var externalMushroom = await _externalMushroomService.GetMushroomByName(inputModel.Name);
+        
+            if (externalMushroom == null)
+            {
+                return false;
+            }
+            inputModel.Name = externalMushroom.Name;
+            inputModel.Description = externalMushroom.Description; 
         }
-        inputModel.Name = externalMushroom.Name;
-        inputModel.Description = externalMushroom.Description;
-        await _mushroomRepository.UpdateMushroomById(mushroomId, inputModel);
+        
+
 
         return await _mushroomRepository.UpdateMushroomById(mushroomId, inputModel);
     }
