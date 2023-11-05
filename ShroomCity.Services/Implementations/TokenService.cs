@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ShroomCity.Models.Constants;
 using ShroomCity.Models.Dtos;
 using ShroomCity.Repositories.Interfaces;
 using ShroomCity.Services.Interfaces;
@@ -52,10 +53,10 @@ public class TokenService : ITokenService
         {
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.EmailAddress),
-            new Claim("TokenId", user.TokenId.ToString()),
+            new Claim(ClaimTypeConstants.TokenIdClaimType, user.TokenId.ToString()),
         };
         // Add all permissions as claims
-        claims.AddRange(user.Permissions.Select(permission => new Claim("permissions", permission)));
+        claims.AddRange(user.Permissions.Select(permission => new Claim(ClaimTypeConstants.PermissionClaimType, permission)));
         
         var claimsIdentity = new ClaimsIdentity(claims, "Token");
         

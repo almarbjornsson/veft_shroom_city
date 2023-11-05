@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShroomCity.Models.Constants;
 using ShroomCity.Models.Dtos;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Services.Interfaces;
@@ -19,7 +20,7 @@ public class ResearchersController : ControllerBase
         _researcherService = researcherService;
     }
     
-    [Authorize(Policy = "role:analyst")]
+    [Authorize(Policy = RoleConstants.Analyst)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ResearcherDto>>> GetAllResearchers()
     {
@@ -34,7 +35,7 @@ public class ResearchersController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:admin")]
+    [Authorize(Policy = RoleConstants.Admin)]
     [HttpPost]
     public async Task<ActionResult<int>> CreateResearcher([FromBody] ResearcherInputModel inputModel)
     {
@@ -53,7 +54,7 @@ public class ResearchersController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:analyst")]
+    [Authorize(Policy = RoleConstants.Analyst)]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ResearcherDto>> GetResearcherById(int id)
     {
@@ -67,7 +68,7 @@ public class ResearchersController : ControllerBase
         return Ok(researcher);
     }
     
-    [Authorize(Policy = "role:researcher")]
+    [Authorize(Policy = RoleConstants.Researcher)]
     [HttpGet("self")]
     public async Task<ActionResult<ResearcherDto>> GetResearcherByEmailAddress()
     {

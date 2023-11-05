@@ -2,7 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ShroomCity.Models.Constants;
 using ShroomCity.Repositories.Interfaces;
+using ShroomCity.Services.Interfaces;
 
 namespace ShroomCity.API.Middleware.Authentication;
 
@@ -44,17 +46,24 @@ public static class JwtMiddlewareExtensions
                     {
                         if (context.SecurityToken is JwtSecurityToken token)
                         {
-                            // Access your TokenRepository here and check if the token is blacklisted.
-                            var tokenRepository = context.HttpContext.RequestServices.GetRequiredService<ITokenRepository>();
+                            var tokenService = context.HttpContext.RequestServices.GetRequiredService<ITokenService>();
                             
                             // Get TokenId from claims
-                            var tokenId = token.Claims.FirstOrDefault(c => c.Type == "TokenId")?.Value;
-                            
-                            var tokenIdInt = int.Parse(tokenId ?? throw new InvalidOperationException("TokenId claim is missing."));
-                            
-                            if (await tokenRepository.IsTokenBlacklisted(tokenIdInt))
+                            var tokenId = token.Claims.FirstOrDefault(c => c.Type == ClaimTypeConstants.TokenIdClaimType)?.Value;
+                            if (tokenId == null)
                             {
-                                context.Fail("This token has been blacklisted.");
+                                context.Fail("TokenId claim is missing.");
+                            }
+
+                            else
+                            {
+                                
+                                var tokenIdInt = int.Parse(tokenId);
+                                
+                                if (await tokenService.IsTokenBlacklisted(tokenIdInt))
+                                {
+                                    context.Fail("This token has been blacklisted.");
+                                }
                             }
                         }
                     }

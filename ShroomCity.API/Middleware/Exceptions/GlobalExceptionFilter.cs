@@ -34,7 +34,12 @@ public class GlobalExceptionFilter : IExceptionFilter
                 Title = "Mushroom not found.",
                 Detail = context.Exception.Message,
             },
-            
+            not null when exceptionType == typeof(UserAlreadyHasRoleException) => new ProblemDetails
+            {
+                Status = (int)HttpStatusCode.Conflict,
+                Title = "User already has role.",
+                Detail = context.Exception.Message,
+            },
             _ => new ProblemDetails
             {
                 Status = (int)status,

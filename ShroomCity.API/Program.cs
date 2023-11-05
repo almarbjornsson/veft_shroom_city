@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ShroomCity.API.Middleware.Authentication;
 using ShroomCity.API.Middleware.Exceptions;
+using ShroomCity.Models.Constants;
 using ShroomCity.Services.Implementations;
 using ShroomCity.Services.Interfaces;
 
@@ -25,21 +26,21 @@ builder.Services.AddAuthorization(options =>
     // Define role permissions inline
     var rolePermissions = new Dictionary<string, List<string>>
     {
-        {"Admin", new List<string> { "read:mushrooms", "write:mushrooms", "read:researchers", "write:researchers" }},
-        {"Researcher", new List<string> { "read:mushrooms", "write:mushrooms", "read:researchers" }},
-        {"Analyst", new List<string> { "read:mushrooms", "read:researchers" }},
+        {RoleConstants.Admin, new List<string> { PermissionConstants.ReadMushrooms, PermissionConstants.WriteMushrooms, PermissionConstants.ReadResearchers, PermissionConstants.WriteResearchers }},
+        {RoleConstants.Researcher, new List<string> { PermissionConstants.ReadMushrooms, PermissionConstants.WriteMushrooms, PermissionConstants.ReadResearchers }},
+        {RoleConstants.Analyst, new List<string> { PermissionConstants.ReadMushrooms, PermissionConstants.ReadResearchers }},
     };
 
     // Create policies for roles based on permissions
     foreach (var role in rolePermissions)
     {
-        options.AddPolicy($"role:{role.Key.ToLower()}", policyBuilder =>
+        options.AddPolicy($"{role.Key}", policyBuilder =>
         {
             policyBuilder.RequireAssertion(context =>
             {
                 // Extract user's permissions from claims
                 var userPermissions = context.User.Claims
-                    .Where(c => c.Type == "permissions")
+                    .Where(c => c.Type == ClaimTypeConstants.PermissionClaimType)
                     .Select(c => c.Value)
                     .ToList();
 
@@ -49,10 +50,10 @@ builder.Services.AddAuthorization(options =>
         });
     }
     // Also add individual permissions, if we require more granular control
-    options.AddPolicy("write:researchers", policy => policy.RequireClaim("permissions", "write:researchers"));
-    options.AddPolicy("read:researchers", policy => policy.RequireClaim("permissions", "read:researchers"));
-    options.AddPolicy("write:mushrooms", policy => policy.RequireClaim("permissions", "write:mushrooms"));
-    options.AddPolicy("read:mushrooms", policy => policy.RequireClaim("permissions", "read:mushrooms"));
+    options.AddPolicy(PermissionConstants.WriteResearchers, policy => policy.RequireClaim(ClaimTypeConstants.PermissionClaimType, PermissionConstants.WriteResearchers));
+    options.AddPolicy(PermissionConstants.ReadResearchers, policy => policy.RequireClaim(ClaimTypeConstants.PermissionClaimType, PermissionConstants.ReadResearchers));
+    options.AddPolicy(PermissionConstants.WriteMushrooms, policy => policy.RequireClaim(ClaimTypeConstants.PermissionClaimType, PermissionConstants.WriteMushrooms));
+    options.AddPolicy(PermissionConstants.ReadMushrooms, policy => policy.RequireClaim(ClaimTypeConstants.PermissionClaimType, PermissionConstants.ReadMushrooms));
 });
 
 // DB

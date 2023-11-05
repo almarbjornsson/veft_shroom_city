@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShroomCity.Models.Constants;
 using ShroomCity.Models.Dtos;
 using ShroomCity.Models.Entities;
+using ShroomCity.Models.Enums;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Repositories.Interfaces;
 using Attribute = ShroomCity.Models.Entities.Attribute;
@@ -56,7 +57,7 @@ public class MushroomRepository : IMushroomRepository
             .Include(u => u.Roles) 
             .FirstOrDefaultAsync(r =>
                 r.EmailAddress == researcherEmailAddress &&
-                r.Roles.Any(role => role.Name == RoleConstants.Researcher)); 
+                r.Roles.Any(role => role.Name == RoleConstants.Researcher || role.Name == RoleConstants.Admin)); 
 
         if (researcher == null)
         {
@@ -170,7 +171,7 @@ public class MushroomRepository : IMushroomRepository
     {
         mushrooms = mushrooms.Where(m =>
         {
-            var stemSizes = m.Attributes.Where(a => a.AttributeType.Type == "StemSize")
+            var stemSizes = m.Attributes.Where(a => a.AttributeType.Type == AttributeTypeEnum.StemSize.ToString())
                 .Select(a => int.Parse(a.Value))
                 .ToList();
             
@@ -192,7 +193,7 @@ public class MushroomRepository : IMushroomRepository
         mushrooms = mushrooms.Where(m =>
         {
             
-            var capSizes = m.Attributes.Where(a => a.AttributeType.Type == "CapSize")
+            var capSizes = m.Attributes.Where(a => a.AttributeType.Type == AttributeTypeEnum.CapSize.ToString())
                 .Select(a => int.Parse(a.Value))
                 .ToList();
             // Mushroom will not be included if there are no cap size attributes
@@ -213,7 +214,7 @@ public class MushroomRepository : IMushroomRepository
     {
         mushrooms = mushrooms.Where(m =>
         {
-            var colors = m.Attributes.Where(a => a.AttributeType.Type == "Color")
+            var colors = m.Attributes.Where(a => a.AttributeType.Type == AttributeTypeEnum.Color.ToString())
                 .Select(a => a.Value)
                 .ToList();
             // Mushroom will not be included if there are no color attributes

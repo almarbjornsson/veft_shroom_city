@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShroomCity.Models;
+using ShroomCity.Models.Constants;
 using ShroomCity.Models.Dtos;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Services.Interfaces;
@@ -21,7 +22,7 @@ public class MushroomsController : ControllerBase
 
 
 
-    [Authorize(Policy = "role:analyst")]
+    [Authorize(Policy = RoleConstants.Analyst)]
     [HttpGet]
     public ActionResult<Envelope<MushroomDto>> GetMushrooms([FromQuery] GetMushroomsInputModel inputModel)
     {
@@ -37,7 +38,7 @@ public class MushroomsController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:analyst")]
+    [Authorize(Policy = RoleConstants.Analyst)]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<MushroomDetailsDto>> GetMushroomById(int id)
     {
@@ -52,7 +53,7 @@ public class MushroomsController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:analyst")]
+    [Authorize(Policy = RoleConstants.Analyst)]
     [HttpGet("/api/Mushrooms/lookup")]
     public async Task<ActionResult<Envelope<MushroomDto>>> GetMushroomsFromExternalApi(
         [FromQuery] int pageSize = 25,
@@ -69,7 +70,7 @@ public class MushroomsController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:researcher")]
+    [Authorize(Policy = RoleConstants.Researcher)]
     [HttpPost]
     public async Task<ActionResult<int>> CreateMushroom(MushroomInputModel mushroom)
     {
@@ -84,7 +85,7 @@ public class MushroomsController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:researcher")]
+    [Authorize(Policy = RoleConstants.Researcher)]
     [HttpPut("{id:int}")]
     public async Task<ActionResult> UpdateMushroom(int id, MushroomUpdateInputModel inputModel, [FromQuery] bool performLookup)
     {
@@ -108,7 +109,7 @@ public class MushroomsController : ControllerBase
     }
     
     
-    [Authorize(Policy = "role:researcher")]
+    [Authorize(Policy = RoleConstants.Researcher)]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteMushroom(int id)
     {
@@ -127,7 +128,7 @@ public class MushroomsController : ControllerBase
         return NoContent();
     }
     
-    [Authorize(Policy = "role:researcher")]
+    [Authorize(Policy = RoleConstants.Researcher)]
     [HttpPost("{id:int}/research-entries")]
     public async Task<ActionResult> CreateResearchEntry(int id, ResearchEntryInputModel inputModel)
     {

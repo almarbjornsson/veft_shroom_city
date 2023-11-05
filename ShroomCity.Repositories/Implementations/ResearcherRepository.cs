@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ShroomCity.Models.Constants;
 using ShroomCity.Models.Dtos;
+using ShroomCity.Models.Entities;
 using ShroomCity.Models.Exceptions;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Repositories.Interfaces;
@@ -20,12 +22,22 @@ public class ResearcherRepository : IResearcherRepository
     {
 
         // Add the researcher role to the user.
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.EmailAddress == inputModel.EmailAddress);
+        var user = await _dbContext.Users
+            .Where(u => u.EmailAddress == inputModel.EmailAddress)
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync();
         if (user is null)
         {
             throw new UserNotFoundException($"User with email address {inputModel.EmailAddress} not found");
         }
-        var researcherRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "Researcher");
+        // Check if the user already has the role Researcher
+        if (user.Roles.Any(r => r.Name == RoleConstants.Researcher))
+        {
+            throw new UserAlreadyHasRoleException("User already has the role Researcher");
+        }
+        
+        
+        var researcherRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == RoleConstants.Researcher);
         if (researcherRole is null)
         {
             throw new RoleNotFoundException("Researcher role not found");
@@ -42,7 +54,7 @@ public class ResearcherRepository : IResearcherRepository
     {
         // Everyone with the role Researcher and Admin
         var researchers = await _dbContext.Users
-            .Where(u => u.Roles.Any(r => r.Name == "Researcher" || r.Name == "Admin"))
+            .Where(u => u.Roles.Any(r => r.Name == RoleConstants.Researcher || r.Name == RoleConstants.Admin))
             .Select(u => new
             {
                 User = u,
@@ -68,52 +80,46 @@ public class ResearcherRepository : IResearcherRepository
         }).ToList();
     }
 
-    public Task<ResearcherDto?> GetResearcherByEmailAddress(string emailAddress)
+    public async Task<ResearcherDto?> GetResearcherByEmailAddress(string emailAddress)
     {
-        var researcher = _dbContext.Users
-            .Where(u => u.EmailAddress == emailAddress)
-            .Select(u => new ResearcherDto
-            {
-                Id = u.Id,
-                EmailAddress = u.EmailAddress,
-                Name = u.Name,
-                Bio = u.Bio,
-                AssociatedMushrooms = _dbContext.Attributes
-                    .Where(a => a.RegisteredById == u.Id)
-                    .SelectMany(a => a.Mushrooms)
-                    .Select(m => new MushroomDto
-                    {
-                        Id = m.Id,
-                        Name = m.Name,
-                        Description = m.Description,
-                    }).ToList()
-            })
-            .FirstOrDefaultAsync();
-        return researcher;
+        var researcher = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+        
+        if (researcher is null)
+        {
+            return null;
+        }
+        return await GetResearcherById(researcher.Id);
     }
 
-    public Task<ResearcherDto?> GetResearcherById(int id)
+    public async Task<ResearcherDto?> GetResearcherById(int id)
     {
-        var researcher = _dbContext.Users
-            .Where(u => u.Id == id)
-            .Select(u => new ResearcherDto
+        var researcher = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (researcher is null)
+        {
+            return null;
+        }
+        
+        var mushrooms = await _dbContext.Mushrooms.Where(m => m.Attributes.Any(a => a.RegisteredById == researcher.Id))
+            .Select(m => new MushroomDto
             {
-                Id = u.Id,
-                EmailAddress = u.EmailAddress,
-                Name = u.Name,
-                Bio = u.Bio,
-                AssociatedMushrooms = _dbContext.Attributes
-                    .Where(a => a.RegisteredById == u.Id)
-                    .SelectMany(a => a.Mushrooms)
-                    .Select(m => new MushroomDto
-                    {
-                        Id = m.Id,
-                        Name = m.Name,
-                        Description = m.Description,
-                    }).ToList()
+                Id = m.Id,
+                Name = m.Name,
+                Description = m.Description,
             })
-            .FirstOrDefaultAsync();
-        return researcher;
+            .ToListAsync();
+            
+        var researcherDto = new ResearcherDto
+        {
+            Id = researcher.Id,
+            EmailAddress = researcher.EmailAddress,
+            Name = researcher.Name,
+            Bio = researcher.Bio,
+            AssociatedMushrooms = mushrooms,
+        };
+        return researcherDto;
     }
 }
 

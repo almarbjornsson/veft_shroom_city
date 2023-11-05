@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using ShroomCity.Models;
 using ShroomCity.Models.Dtos;
+using ShroomCity.Models.Enums;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Repositories.Interfaces;
 using ShroomCity.Services.Interfaces;
@@ -34,7 +35,7 @@ public class MushroomService : IMushroomService
         // Colors
         externalMushroom.Colors.ForEach(color => attributeDtos.Add(new AttributeDto
         {
-            Type = "Color",
+            Type = AttributeTypeEnum.Color.ToString(),
             Value = color,
             RegisteredBy = researcherEmailAddress,
         }));
@@ -42,7 +43,7 @@ public class MushroomService : IMushroomService
         // Shapes
         externalMushroom.Shapes.ForEach(shape => attributeDtos.Add(new AttributeDto
         {
-            Type = "Shape",
+            Type = AttributeTypeEnum.Shape.ToString(),
             Value = shape,
             RegisteredBy = researcherEmailAddress,
         }));
@@ -50,7 +51,7 @@ public class MushroomService : IMushroomService
         // Surfaces
         externalMushroom.Surfaces.ForEach(surface => attributeDtos.Add(new AttributeDto
         {
-            Type = "Surface",
+            Type = AttributeTypeEnum.Surface.ToString(),
             Value = surface,
             RegisteredBy = researcherEmailAddress,
         }));

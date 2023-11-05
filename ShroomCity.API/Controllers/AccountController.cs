@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShroomCity.Models.Constants;
 using ShroomCity.Models.InputModels;
 using ShroomCity.Services.Interfaces;
 
@@ -25,7 +26,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Login(LoginInputModel inputModel)
     {
         // Check if user is already signed in (get token id)
-        var tokenId = User.Claims.FirstOrDefault(c => c.Type == "TokenId")?.Value;
+        var tokenId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypeConstants.TokenIdClaimType)?.Value;
         
         // If user is already signed in, sign them out to blacklist the token
         if (tokenId != null)
@@ -77,7 +78,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Logout()
     {
         // Get tokenID claim from token, if not found, return 401
-        var tokenId = User.Claims.FirstOrDefault(c => c.Type == "TokenId")?.Value;
+        var tokenId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypeConstants.TokenIdClaimType)?.Value;
         if (tokenId is null)
         {
             return Unauthorized();
