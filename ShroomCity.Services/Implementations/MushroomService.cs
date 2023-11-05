@@ -21,11 +21,13 @@ public class MushroomService : IMushroomService
     public async Task<int> CreateMushroom(string researcherEmailAddress, MushroomInputModel inputModel)
     {
         var externalMushroom = await _externalMushroomService.GetMushroomByName(inputModel.Name);
+        // If the mushroom does not exist in the external API, we just create it without attributes
         if (externalMushroom == null)
         {
-            throw new KeyNotFoundException("Mushroom not found with the provided name.");
+            return await _mushroomRepository.CreateMushroom(inputModel, researcherEmailAddress,
+                new List<AttributeDto>());
         }
-        
+            
         // Add description
         inputModel.Description = externalMushroom.Description;
         
@@ -55,8 +57,8 @@ public class MushroomService : IMushroomService
             Value = surface,
             RegisteredBy = researcherEmailAddress,
         }));
-        
-        return await _mushroomRepository.CreateMushroom(inputModel, researcherEmailAddress, attributeDtos);        
+        return await _mushroomRepository.CreateMushroom(inputModel, researcherEmailAddress, attributeDtos);
+
     }
 
     public Task<bool> CreateResearchEntry(int mushroomId, string researcherEmailAddress, ResearchEntryInputModel inputModel)

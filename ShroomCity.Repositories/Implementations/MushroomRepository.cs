@@ -28,13 +28,19 @@ public class MushroomRepository : IMushroomRepository
         {
             throw new KeyNotFoundException("Researcher not found with the provided email address.");
         }
-
-        // Retrieve all attributes at once by their Ids
-        var attributeIds = attributeDtos.Select(a => a.Id).ToList();
-        var associatedAttributes = await _dbContext.Attributes
-            .Where(a => attributeIds.Contains(a.Id))
-            .ToListAsync();
-
+        
+        // Create attributes
+        var associatedAttributes = attributeDtos.Select(a => new Attribute
+        {
+            AttributeType = new AttributeType
+            {
+                Type = a.Type
+            },
+            Value = a.Value,
+            RegisteredById = researcher.Id,
+        }).ToList();
+        
+        
         // Create new Mushroom entity
         var mushroomEntity = new Mushroom
         {
@@ -44,6 +50,7 @@ public class MushroomRepository : IMushroomRepository
         };
 
         // Add to context and save
+        _dbContext.Attributes.AddRange(associatedAttributes);
         _dbContext.Mushrooms.Add(mushroomEntity);
         await _dbContext.SaveChangesAsync();
 
