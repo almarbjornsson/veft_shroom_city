@@ -152,6 +152,10 @@ public class MushroomRepository : IMushroomRepository
 
     public (int totalPages, IEnumerable<MushroomDto> mushrooms) GetMushroomsByCriteria(string? name, int? stemSizeMinimum, int? stemSizeMaximum, int? capSizeMinimum, int? capSizeMaximum, string? color, int pageSize, int pageNumber)
     {
+        
+        
+        
+        
         var mushrooms = _dbContext.Mushrooms
             .Include(m => m.Attributes)
             .ThenInclude(attribute => attribute.AttributeType)
